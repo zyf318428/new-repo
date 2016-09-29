@@ -7,7 +7,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	
+
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -35,16 +35,16 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 		return nil, err
 	}
 
-	err := stub.PutState("time", []byte(args[1]))
+	err = stub.PutState("time", []byte(args[1]))
 	if err != nil {
 		return nil, err
 	}
 
-	err := stub.PutState("position", []byte(args[2]))
+	err = stub.PutState("position", []byte(args[2]))
 	if err != nil {
 		return nil, err
 	}
-	err := stub.PutState("state", []byte(args[3]))
+	err = stub.PutState("state", []byte(args[3]))
 	if err != nil {
 		return nil, err
 	}
@@ -90,21 +90,21 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Incorrect number of arguments. Expecting 4. name of the key and value to set")
 	}
 
-	err := stub.PutState("person", []byte(args[0]))
+	err = stub.PutState("person", []byte(args[0]))
 	if err != nil {
 		return nil, err
 	}
 
-	err := stub.PutState("time", []byte(args[1]))
+	err = stub.PutState("time", []byte(args[1]))
 	if err != nil {
 		return nil, err
 	}
 
-	err := stub.PutState("position", []byte(args[2]))
+	err = stub.PutState("position", []byte(args[2]))
 	if err != nil {
 		return nil, err
 	}
-	err := stub.PutState("state", []byte(args[3]))
+	err = stub.PutState("state", []byte(args[3]))
 	if err != nil {
 		return nil, err
 	}
@@ -113,37 +113,42 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 }
 
 // read - query function to read key/value pair
-func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) read(stub *shim.ChaincodeStub, args []string) ([]string, error) {
 	var key, jsonResp string
+	var result []string
 	var err error
 
 	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. ")
 	}
 
-	byte[0], err := stub.GetState(person)
+	person, err := stub.GetState(person)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	byte[1], err := stub.GetState(time)
+	time, err := stub.GetState(time)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	byte[2], err := stub.GetState(position)
+	position, err := stub.GetState(position)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	byte[3], err := stub.GetState(state)
+	state, err := stub.GetState(state)
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
 		return nil, errors.New(jsonResp)
 	}
 
-	return byte, nil
+	result[0] = person
+	result[1] = time
+	result[2] = position
+	result[3] = state
+	return result, nil
 }
