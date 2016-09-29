@@ -119,7 +119,7 @@ func (t *SimpleChaincode) readPerson(stub *shim.ChaincodeStub, args []string) ([
 	var key, jsonResp string
 	var err error
 
-	if len(args) != 1 {
+	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
@@ -138,7 +138,7 @@ func (t *SimpleChaincode) readTime(stub *shim.ChaincodeStub, args []string) ([]b
 	var key, jsonResp string
 	var err error
 
-	if len(args) != 1 {
+	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
@@ -157,7 +157,7 @@ func (t *SimpleChaincode) readPosition(stub *shim.ChaincodeStub, args []string) 
 	var key, jsonResp string
 	var err error
 
-	if len(args) != 1 {
+	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
@@ -176,7 +176,7 @@ func (t *SimpleChaincode) readState(stub *shim.ChaincodeStub, args []string) ([]
 	var key, jsonResp string
 	var err error
 
-	if len(args) != 1 {
+	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
