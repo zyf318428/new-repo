@@ -15,17 +15,8 @@ import (
 type SimpleChaincode struct {
 }
 
-//var person, time, position, state string
-
-func main() {
-	err := shim.Start(new(SimpleChaincode))
-	if err != nil {
-		fmt.Printf("Error starting Simple chaincode: %s", err)
-	}
-}
-
 // Init resets all the things
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if len(args) != 4 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 4")
 	}
@@ -53,7 +44,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 }
 
 // Invoke isur entry point to invoke a chaincode function
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
@@ -68,24 +59,24 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 }
 
 // Query is our entry point for queries
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
 
 	// Handle different functions
 	if function == "readPerson" { //read a variable
-		return t.read(stub, args)
+		return t.readPerson(stub, args)
 	}
 	// Handle different functions
 	if function == "readTime" { //read a variable
-		return t.read(stub, args)
+		return t.readTime(stub, args)
 	}
 	// Handle different functions
 	if function == "readPosition" { //read a variable
-		return t.read(stub, args)
+		return t.readPosition(stub, args)
 	}
 	// Handle different functions
 	if function == "readState" { //read a variable
-		return t.read(stub, args)
+		return t.readState(stub, args)
 	}
 	fmt.Println("query did not find func: " + function)
 
@@ -93,8 +84,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 }
 
 // write - invoke function to write key/value pair
-func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	var key, value string
+func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var err error
 	fmt.Println("running write()")
 
@@ -102,21 +92,21 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 		return nil, errors.New("Incorrect number of arguments. Expecting 4. name of the key and value to set")
 	}
 
-	_, err = stub.PutState("person", []byte(args[0]))
+	err = stub.PutState("person", []byte(args[0]))
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = stub.PutState("time", []byte(args[1]))
+	err = stub.PutState("time", []byte(args[1]))
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = stub.PutState("position", []byte(args[2]))
+	err = stub.PutState("position", []byte(args[2]))
 	if err != nil {
 		return nil, err
 	}
-	_, err = stub.PutState("state", []byte(args[3]))
+	err = stub.PutState("state", []byte(args[3]))
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +115,7 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 }
 
 // read - query function to read key/value pair
-func (t *SimpleChaincode) readPerson(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) readPerson(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
 
@@ -144,7 +134,7 @@ func (t *SimpleChaincode) readPerson(stub *shim.ChaincodeStub, args []string) ([
 }
 
 // read - query function to read key/value pair
-func (t *SimpleChaincode) readTime(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) readTime(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
 
@@ -163,7 +153,7 @@ func (t *SimpleChaincode) readTime(stub *shim.ChaincodeStub, args []string) ([]b
 }
 
 // read - query function to read key/value pair
-func (t *SimpleChaincode) readPosition(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) readPosition(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
 
@@ -182,7 +172,7 @@ func (t *SimpleChaincode) readPosition(stub *shim.ChaincodeStub, args []string) 
 }
 
 // read - query function to read key/value pair
-func (t *SimpleChaincode) readstate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) readState(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
 	var err error
 
@@ -198,4 +188,11 @@ func (t *SimpleChaincode) readstate(stub *shim.ChaincodeStub, args []string) ([]
 	}
 
 	return valAsbytes, nil
+}
+
+func main() {
+	err := shim.Start(new(SimpleChaincode))
+	if err != nil {
+		fmt.Printf("Error starting Simple chaincode: %s", err)
+	}
 }
