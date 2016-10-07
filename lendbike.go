@@ -116,17 +116,16 @@ func (t *SimpleChaincode) write(stub *shim.ChaincodeStub, args []string) ([]byte
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) readPerson(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	var key, jsonResp string
+	var jsonResp string
 	var err error
 
 	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
-	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	valAsbytes, err := stub.GetState(person)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+		jsonResp = "{\"Error\":\"Failed to get state \"}"
 		return nil, errors.New(jsonResp)
 	}
 
@@ -135,17 +134,16 @@ func (t *SimpleChaincode) readPerson(stub *shim.ChaincodeStub, args []string) ([
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) readTime(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	var key, jsonResp string
+	var jsonResp string
 	var err error
 
 	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
-	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	valAsbytes, err := stub.GetState(time)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+		jsonResp = "{\"Error\":\"Failed to get state \"}"
 		return nil, errors.New(jsonResp)
 	}
 
@@ -154,17 +152,16 @@ func (t *SimpleChaincode) readTime(stub *shim.ChaincodeStub, args []string) ([]b
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) readPosition(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	var key, jsonResp string
+	var jsonResp string
 	var err error
 
 	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
-	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	valAsbytes, err := stub.GetState(position)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+		jsonResp = "{\"Error\":\"Failed to get state \"}"
 		return nil, errors.New(jsonResp)
 	}
 
@@ -173,7 +170,7 @@ func (t *SimpleChaincode) readPosition(stub *shim.ChaincodeStub, args []string) 
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) readState(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	var key, jsonResp string
+	var jsonResp string
 	var err error
 
 	if len(args) != 0 {
@@ -181,9 +178,9 @@ func (t *SimpleChaincode) readState(stub *shim.ChaincodeStub, args []string) ([]
 	}
 
 	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	valAsbytes, err := stub.GetState(state)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+		jsonResp = "{\"Error\":\"Failed to get state \"}"
 		return nil, errors.New(jsonResp)
 	}
 
